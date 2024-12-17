@@ -1,0 +1,24 @@
+{% extends 'documents/base.html' %}
+
+{% block body %}
+<div class="container">
+    <form class="form" method="POST" action="/reader/0">{{ form }}{% csrf_token %}
+    <button class="btn btn-primary" type="submit" >Submit</button></form>
+    
+    </div>
+    
+    <div class="container">
+        
+        <form method="POST" action="/create/book/{{ instance.id }}" novalidate>{{ book_form }}{% csrf_token %}<button class="btn btn-success">add book</button></form>
+        <nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">Books</span>
+  </div>
+</nav>
+        {% for form in books %}
+            <form class="form" method="POST" action="/reader/0">{{ form }}{% csrf_token %}<button class="btn btn-primary" type="submit" >Submit</button></form>
+        {% endfor %}
+    </div>
+    
+    
+{% endblock %}
