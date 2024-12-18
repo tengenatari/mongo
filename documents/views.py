@@ -14,7 +14,9 @@ def index(request):
         for key in req:
             if req[key] != ['']:
                 clear_req[key] = req[key]
-        instance = Reader.objects.filter(**clear_req).all()
+        print(clear_req)
+        instance = Reader.objects.filter(**clear_req)
+        print(instance)
         
 
     else:

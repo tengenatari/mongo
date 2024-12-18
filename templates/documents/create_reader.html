@@ -9,7 +9,7 @@
     
     <div class="container">
         
-        <form method="POST" action="/create/book/{{ instance.id }}" novalidate>{{ book_form }}{% csrf_token %}<button class="btn btn-success">add book</button></form>
+        <form method="POST" action="/create/book/{{ instance.id }}/0" novalidate>{{ book_form }}{% csrf_token %}<button class="btn btn-success">add book</button></form>
         <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
     <span class="navbar-brand mb-0 h1">Books</span>
@@ -17,6 +17,7 @@
 </nav>
         {% for form in books %}
             <form class="form" method="POST" action="/reader/0">{{ form }}{% csrf_token %}<button class="btn btn-primary" type="submit" >Submit</button></form>
+            <form class="form" method="POST" action="/delete/book/{{ form.id }}">{% csrf_token %}<button class="btn btn-danger" type="submit" >Delete</button></form>
         {% endfor %}
     </div>
     
