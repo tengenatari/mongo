@@ -27,7 +27,7 @@
   <tr>
       <form>
       <th scope="col"><input class="form-control" name="name__istartswith"></th>
-          <th scope="col"><input class="form-control" name="email__istartswith"></th>
+          
       <th scope="col"><input class="form-control" name="phone__istartswith"></th>
       <th scope="col">
           <button type="submit" class="btn btn-info"> search</button></th>
@@ -42,7 +42,7 @@
     <tr>
       
       <td>{{ reader.name }}</td>
-      <td>{{ reader.email }}</td>
+      
       <td>{{ reader.phone }}</td>
     <td><a class="btn btn-info" href="/reader/{{ reader.id }}">edit</a></td>
     <td><a class="btn btn-danger" href="/books/{{ reader.id }}">delete</a></td>

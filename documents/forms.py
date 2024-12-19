@@ -5,34 +5,27 @@ from documents.models import *
 class ReaderForm(forms.ModelForm):
     class Meta:
         model = Reader
-        fields = ['name', 'age', 'gender', 'address', 'phone', 'email']
+        fields = ['name', 'phone']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, attributes=None, **kwargs):
         super(ReaderForm, self).__init__(*args, **kwargs)
+        if attributes is None:
+            attributes = dict()
+        self.my_attributes = attributes
         for field in self.fields:
             self.fields[field].widget.attrs = {'class': 'form-control'}
 
     def clean(self):
-        cleaned_data = super(ReaderForm, self).clean()
-        self.instance.attributes = {}
+        cleaned_data = super().clean()
+        attributes = dict()
+
+        for key, value in self.my_attributes.items():
+            print(key, value)
+            attributes[key] = value
+        self.instance.attributes = attributes
+        self.instance.save()
 
         return cleaned_data
 
 
-class BookForm(forms.ModelForm):
-
-    class Meta:
-        model = Book
-        fields = ['name', 'author', 'pages', 'year']
-
-    def __init__(self, *args, **kwargs):
-        super(BookForm, self).__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields[field].widget.attrs = {'class': 'form-control'}
-
-    def clean(self):
-        cleaned_data = super(BookForm, self).clean()
-        self.instance.attributes = {}
-
-        return cleaned_data
 

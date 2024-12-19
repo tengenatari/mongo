@@ -3,12 +3,9 @@ from djongo import models
 from djongo.models import ObjectIdField, ArrayField
 
 
-class Book(models.Model):
+class Ticket(models.Model):
     _id = ObjectIdField()
     name = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
-    year = models.IntegerField()
-    pages = models.IntegerField()
     attributes = models.JSONField()
 
     def __str__(self):
@@ -22,15 +19,9 @@ class Book(models.Model):
 class Reader(models.Model):
     _id = ObjectIdField()
     name = models.CharField(max_length=100)
-    age = models.IntegerField()
-    gender = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
 
-    books = ArrayField(Book)
-
-    attributes = models.JSONField()
+    attributes = models.JSONField(null=True, blank=True, default=dict)
 
     def __str__(self):
         return self.name
@@ -38,4 +29,3 @@ class Reader(models.Model):
     @property
     def id(self):
         return self._id
-

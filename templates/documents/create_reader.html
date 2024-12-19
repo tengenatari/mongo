@@ -2,23 +2,30 @@
 
 {% block body %}
 <div class="container">
-    <form class="form" method="POST" action="/reader/0">{{ form }}{% csrf_token %}
+    <form class="form row" method="POST" action="/reader/{% if instance.id %}{{ instance.id }}{% else %}0{% endif %}" novalidate>{{ form }}
+        
+        {% for key, value in attributes.items %}
+            
+            <div class="col-sm-6"><input class="form-control col-sm-1" name="key_{{ key }}" value="{{ key }}"></div>
+            <div class="col-sm-6"><input class="form-control col-sm-2" name="attr_{{ key }}" value="{{ value }}"></div>
+            
+            
+        {% endfor %}
+        
+        {% csrf_token %}
     <button class="btn btn-primary" type="submit" >Submit</button></form>
     
     </div>
     
     <div class="container">
         
-        <form method="POST" action="/create/book/{{ instance.id }}/0" novalidate>{{ book_form }}{% csrf_token %}<button class="btn btn-success">add book</button></form>
+        <form method="POST" action="/create/attribute/{{ instance.id }}">{{ book_form }}{% csrf_token %}<button class="btn btn-success">add attribute</button></form>
         <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
     <span class="navbar-brand mb-0 h1">Books</span>
   </div>
 </nav>
-        {% for form in books %}
-            <form class="form" method="POST" action="/reader/0">{{ form }}{% csrf_token %}<button class="btn btn-primary" type="submit" >Submit</button></form>
-            <form class="form" method="POST" action="/delete/book/{{ form.id }}">{% csrf_token %}<button class="btn btn-danger" type="submit" >Delete</button></form>
-        {% endfor %}
+        
     </div>
     
     
