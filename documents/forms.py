@@ -27,10 +27,11 @@ class ReaderForm(forms.ModelForm):
 
         return cleaned_data
 
+
 class TicketForm(forms.ModelForm):
     class Meta:
-        model = Reader
-        fields = ['name', 'phone']
+        model = Ticket
+        fields = ['name', 'age']
 
     def __init__(self, *args, attributes=None, **kwargs):
         super(TicketForm, self).__init__(*args, **kwargs)

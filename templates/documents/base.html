@@ -19,7 +19,8 @@
     <tr>
       
       <th scope="col">Name</th>
-      <th scope="col">Phone</th>
+      <th scope="col">{% if instance_type == 'reader' %}Phone{% else %}Age{% endif %}</th>
+
       <th scope="col"></th><th scope="col">
     </th>
 
@@ -28,7 +29,7 @@
       <form>
       <th scope="col"><input class="form-control" name="name__istartswith"></th>
 
-      <th scope="col"><input class="form-control" name="phone__istartswith"></th>
+      <th scope="col"><input class="form-control" name="{% if instance_type == 'reader' %}phone{% else %}age{% endif %}__istartswith"></th>
       <th scope="col">
           <button type="submit" class="btn btn-info"> search</button></th>
         </form>
@@ -43,7 +44,7 @@
       
       <td>{{ reader.name }}</td>
 
-      <td>{{ reader.phone }}</td>
+      <td>{{ reader.phone }}{{ reader.age }}</td>
         <td><a class="btn btn-info" href="/{{ instance_type }}/{{ reader.id }}">edit</a></td>
         <td><a class="btn btn-danger" href="/delete/{{ instance_type }}/{{ reader.id }}">delete</a></td>
 

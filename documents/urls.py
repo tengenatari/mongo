@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 
-urlpatterns = [path('<str:instance>', views.index, name='index'),
+urlpatterns = [path('', views.main),
+                path('<str:instance>', views.index, name='index'),
 
                path('<str:instance>/<str:instance_id>', views.create_reader, name='book'),
                path('delete/<str:instance>/<str:instance_id>', views.delete_reader, name='book'),

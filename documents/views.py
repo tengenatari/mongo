@@ -10,6 +10,10 @@ models = {'reader': Reader, 'ticket': Ticket}
 forms = {'reader': ReaderForm, 'ticket': TicketForm}
 
 
+def main(request):
+    return render(request, 'documents/index.html')
+
+
 def index(request, instance):
     instance_type = models[instance]
     instance_str = instance
@@ -64,9 +68,9 @@ def create_reader(request, instance_id, instance="reader"):
         if form.is_valid():
 
             form.save()
-
-        context["keys"] = list(instance.attributes.keys())
-        context["attributes"] = dict(instance.attributes)
+        if instance_id != "0":
+            context["keys"] = list(instance.attributes.keys())
+            context["attributes"] = dict(instance.attributes)
 
     else:
         if instance_id == "0":
