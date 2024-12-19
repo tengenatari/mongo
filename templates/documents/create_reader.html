@@ -1,20 +1,23 @@
 {% extends 'documents/base.html' %}
 
 {% block body %}
-<div class="container">
+<div class="container ">
+    <div class="row">
     <form class="form row" method="POST" action="/reader/{% if instance.id %}{{ instance.id }}{% else %}0{% endif %}" novalidate>{{ form }}
-        
+        <div class="col-sm-5">Название атрибута</div>
+        <div class="col-sm-5">Значение</div>
+        <div class="col-sm-1">Удалить</div>
         {% for key, value in attributes.items %}
-            
-            <div class="col-sm-6"><input class="form-control col-sm-1" name="key_{{ key }}" value="{{ key }}"></div>
-            <div class="col-sm-6"><input class="form-control col-sm-2" name="attr_{{ key }}" value="{{ value }}"></div>
-            
-            
+
+            <div class="col-sm-5"><input class="form-control" name="key_{{ key }}" value="{{ key }}"></div>
+            <div class="col-sm-5"><input class="form-control" name="attr_{{ key }}" value="{{ value }}"></div>
+            <input name="checkbox_{{ key }}" class="btn-danger col-sm-1" type="checkbox" >
+
         {% endfor %}
-        
+
         {% csrf_token %}
     <button class="btn btn-primary" type="submit" >Submit</button></form>
-    
+    </div>
     </div>
     
     <div class="container">
@@ -25,7 +28,7 @@
     <span class="navbar-brand mb-0 h1">Books</span>
   </div>
 </nav>
-        
+
     </div>
     
     

@@ -41,15 +41,19 @@ def create_reader(request, instance_id, instance="reader"):
         else:
             instance = Reader.objects.get(_id=ObjectId(instance_id))
             attributes = {}
-            req = request.POST.copy()
+            req = request.POST.dict().copy()
             print(req)
-            for x in req:
+            for x in request.POST:
                 if x.startswith('attr_'):
                     attributes[x[5:]] = request.POST[x]
             new_attributes = {}
+            for x in request.POST:
+                if x.startswith('checkbox_') and req[x] == 'on':
+                    del req[f"key_{x[9:]}"]
+
             for x in req:
                 if x.startswith('key_'):
-                    new_attributes[request.POST[x]] = attributes[x[4:]]
+                    new_attributes[req[x]] = attributes[x[4:]]
 
             print(new_attributes)
             form = ReaderForm(request.POST, attributes=new_attributes, instance=instance)
