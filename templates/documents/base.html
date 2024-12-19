@@ -14,25 +14,25 @@
 </nav>
 {% block body %}
     <div class="container">
-        <table class="table">
+        <table class="table table-striped table-bordered">
   <thead>
     <tr>
       
       <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Phone</th><th scope="col">
+      <th scope="col">Phone</th>
+      <th scope="col"></th><th scope="col">
     </th>
-    <th scope="col"></th>
+
     </tr>
   <tr>
       <form>
       <th scope="col"><input class="form-control" name="name__istartswith"></th>
-          
+
       <th scope="col"><input class="form-control" name="phone__istartswith"></th>
       <th scope="col">
           <button type="submit" class="btn btn-info"> search</button></th>
         </form>
-      <th><a class="btn btn-primary" href="/reader/0"> new</a></th>
+      <th><a class="btn btn-primary" href="/{{ instance_type }}/0"> new</a></th>
     
     
     </tr>
@@ -42,10 +42,37 @@
     <tr>
       
       <td>{{ reader.name }}</td>
-      
+
       <td>{{ reader.phone }}</td>
-    <td><a class="btn btn-info" href="/reader/{{ reader.id }}">edit</a></td>
-    <td><a class="btn btn-danger" href="/books/{{ reader.id }}">delete</a></td>
+        <td><a class="btn btn-info" href="/{{ instance_type }}/{{ reader.id }}">edit</a></td>
+        <td><a class="btn btn-danger" href="/delete/{{ instance_type }}/{{ reader.id }}">delete</a></td>
+
+        <td colspan="4">
+            <table class="table mb-2">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Атрибут
+                    </th>
+                     <th scope="col">
+                        Значение
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in reader.attributes.items %}
+                <tr>
+                    <td>
+                        {{ key }}
+                    </td>
+                    <td>
+                        {{ value }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+      </td>
     </tr>
     {% endfor %}
     

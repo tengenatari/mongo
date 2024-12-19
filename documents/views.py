@@ -1,16 +1,18 @@
 from django.shortcuts import render, HttpResponse, redirect
 
-from documents.forms import ReaderForm
+from documents.forms import ReaderForm, TicketForm
 from documents.models import Reader, Ticket
 from djongo.models.fields import ObjectId, JSONField
 # Create your views here.
 
 
 models = {'reader': Reader, 'ticket': Ticket}
+forms = {'reader': ReaderForm, 'ticket': TicketForm}
 
 
-def index(request, instance="reader"):
-
+def index(request, instance):
+    instance_type = models[instance]
+    instance_str = instance
     if request.GET:
         req = dict(request.GET)
         clear_req = {}
@@ -19,27 +21,28 @@ def index(request, instance="reader"):
             if req[key] != ['']:
                 clear_req[key] = req[key]
         print(clear_req)
-        instance = Reader.objects.filter(**clear_req)
+        instance = instance_type.objects.filter(**clear_req)
         print(instance)
 
     else:
-        instance = Reader.objects.all()
-    return render(request, 'documents/base.html', {'readers': instance})
+        instance = instance_type.objects.all()
+    return render(request, 'documents/base.html', {'readers': instance, 'instance_type': instance_str})
 
 
 def create_reader(request, instance_id, instance="reader"):
-    context = {}
+    context = {'instance_type': instance}
+    instance_type = models[instance]
+
+    form_type = forms[instance]
     if request.method == 'POST':
         if instance_id == "0":
 
             new_data = {}
-            new_data['name'] = request.POST['name']
-            new_data['phone'] = request.POST['phone']
 
-            form = ReaderForm(new_data)
+            form = form_type(request.POST)
 
         else:
-            instance = Reader.objects.get(_id=ObjectId(instance_id))
+            instance = instance_type.objects.get(_id=ObjectId(instance_id))
             attributes = {}
             req = request.POST.dict().copy()
             print(req)
@@ -56,7 +59,7 @@ def create_reader(request, instance_id, instance="reader"):
                     new_attributes[req[x]] = attributes[x[4:]]
 
             print(new_attributes)
-            form = ReaderForm(request.POST, attributes=new_attributes, instance=instance)
+            form = form_type(request.POST, attributes=new_attributes, instance=instance)
 
         if form.is_valid():
 
@@ -67,43 +70,32 @@ def create_reader(request, instance_id, instance="reader"):
 
     else:
         if instance_id == "0":
-            form = ReaderForm()
+            form = form_type()
         else:
-            instance = Reader.objects.get(_id=ObjectId(instance_id))
-            form = ReaderForm(instance=instance)
+            instance = instance_type.objects.get(_id=ObjectId(instance_id))
+            form = form_type(instance=instance)
             context["keys"] = list(instance.attributes.keys())
             context["attributes"] = dict(instance.attributes)
     context['form'] = form
     context['instance'] = instance
+
     return render(request, 'documents/create_reader.html', context=context)
 
 
-def add_product(request):
-    if request.method == 'POST':
-        form = ReaderForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.attributes = request.POST["attributes"]
-            instance.save()
-    return redirect('index')
+def delete_reader(request, instance_id, instance):
+    instance_str = instance
+    instance_type = models[instance]
 
-
-def delete_reader(request, instance_id):
-    instance = Reader.objects.get(_id=ObjectId(instance_id))
+    instance = instance_type.objects.get(_id=ObjectId(instance_id))
     instance.delete()
+    return redirect(f'/{instance_str}')
 
 
-def delete_attr(request, instance_id):
-    instance = Reader.objects.get(_id=ObjectId(instance_id))
-
-    if request.POST['key'] in instance.attribute:
-        del instance.attribute[request.POST['key']]
-        instance.save()
-
-
-def add_attribute(request, instance_id):
+def add_attribute(request, instance_id, instance):
+    instance_type = models[instance]
+    instance_str = instance
     if request.method == 'POST':
-        instance = Reader.objects.get(_id=ObjectId(instance_id))
+        instance = instance_type.objects.get(_id=ObjectId(instance_id))
         instance.attributes[f'new_attribute_{len(instance.attributes)}'] = f'new_attribute_{len(instance.attributes)}'
         instance_save = instance.save()
-    return redirect(f'/reader/{instance_id}')
+    return redirect(f'/{instance_str}/{instance_id}')

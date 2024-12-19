@@ -22,7 +22,7 @@
     
     <div class="container">
         
-        <form method="POST" action="/create/attribute/{{ instance.id }}">{{ book_form }}{% csrf_token %}<button class="btn btn-success">add attribute</button></form>
+        <form method="POST" action="/create/attribute/{{ instance_type }}/{{ instance.id }}">{{ book_form }}{% csrf_token %}<button class="btn btn-success">add attribute</button></form>
         <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
     <span class="navbar-brand mb-0 h1">Books</span>
